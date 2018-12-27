@@ -1,0 +1,15 @@
+li {
+ list-style-type: none;
+ font-family: Helvetica, sans-serif;
+ background-color: #80b3ff;
+ color: #fff;
+ padding: 5px 12px;
+ margin: 5px;
+ border-radius: 50%;
+ text-align: center;
+ cursor: pointer;
+}
+
+ul {
+    max-width: 100px;
+}

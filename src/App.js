@@ -23,28 +23,59 @@ const shoppingItemsData = [
 ]
 
 class App extends React.Component {
-  
+
   constructor(props) {
     super(props);
     this.state = {
-      item:'abc'
+      shoppingCartItem: [{
+        item: {}
+      }]
     }
-    // this.handleSizeClick = this.handleSizeClick.bind(this);
-  }
-  
-  handleSizeClick() {
-    console.log("this is size:", this);
+
+    this.handleShoppingItemCardClick = this.handleShoppingItemCardClick.bind(this)
+    this.handleSizeClick = this.handleSizeClick.bind(this);
+    this.addToCartElement = null;
   }
 
-  handleShoppingItemCardClick() {
-    console.log("clicked item is:", this);
-    this.setState({item:'abc'})
-    console.log("this.state", this.state);
+  handleSizeClick(size) {
+    console.log("this is size:", size);
   }
 
-  _renderAddToCartComponent() {
-    console.log("this.state", this.state);
-    return <AddToCart />
+  handleShoppingItemCardClick(item) {
+    const prevState = this.state.shoppingCartItem;
+    const titleArray = [];
+    console.log("clicked item is:", item);
+    console.log("prevState", prevState);
+
+    //allow this once on undefined title logic
+    if (prevState[0].item.title == undefined && prevState.length == 1) {
+      console.log("this shoudl appear only once");
+      this.setState({ shoppingCartItem: prevState.concat([{ item: item }]) }, () => {
+        console.log("this.state callback success", this.state);
+        //iterate over prevState array and repetitive clicked item should not get added
+        for (var i = 0; i < this.state.shoppingCartItem.length; i++) {
+          if (this.state.shoppingCartItem[i].item != undefined) {
+            titleArray.push(this.state.shoppingCartItem[i].item.title)
+          }
+        }
+
+        console.log("titleArray", titleArray);
+      })
+    }
+
+    for (var i = 1; i < prevState.length; i++) {
+      if (prevState[i].item.title) {
+        console.log("titleArray.indexOf(prevState[i].item.title)", titleArray.indexOf(prevState[i].item.title));
+        if (titleArray.indexOf(prevState[i].item.title) > -1 || titleArray.indexOf(prevState[i].item.title) == "undefined") {
+          this.setState({ shoppingCartItem: prevState.concat([{ item: item }]) }, () => {
+            console.log("this.state callback success", this.state);
+          })
+        } else {
+          console.log("item got clicked again");
+        }
+      }
+    }
+    this.addToCartElement = <AddToCart shoppingItemDetails={item} />
   }
 
   render() {
@@ -54,17 +85,19 @@ class App extends React.Component {
           <div className="col-lg-3 col-md-3 col-sm-12 sizes-class">
             <Sizes
               sizesAvailable={sizesAvailable}
-              onClick={(size) => this.handleSizeClick.bind(size)}
+              onClick={(size) => this.handleSizeClick(size)}
             />
           </div>
           <div className="col-md-9 shopping-item-class">
             <ShoppingItems
               shoppingItemsData={shoppingItemsData}
-              onClick={(item) => this.handleShoppingItemCardClick.bind(item, this)}
+              onClick={(item) => this.handleShoppingItemCardClick(item)}
             />
           </div>
         </div>
-        {this._renderAddToCartComponent()}
+        <div className="cart-list">
+          {(this.state.shoppingCartItem) ? this.addToCartElement : ''}
+        </div>
       </div>
     );
   }

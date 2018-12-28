@@ -6,7 +6,7 @@ function Sizes(props) {
     console.log("sizesAvailable", props.sizesAvailable)
 
     const sizeItems = props.sizesAvailable.map((size) =>
-        <li key={size.toString()} onClick={props.onClick(size)}>{size}</li>
+        <li key={size.toString()} onClick={() => props.onClick(size)}>{size}</li>
     )
     return (
         <ul>{sizeItems}</ul>

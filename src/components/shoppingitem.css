@@ -1,3 +1,7 @@
 .shopping-item-card {
     width: 100%;
 }
+
+.card {
+    height: 280px;
+}

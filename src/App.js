@@ -3,35 +3,48 @@ import logo from './logo.svg';
 import './App.css';
 import Sizes from './components/sizes.js'
 import ShoppingItems from './components/shoppingitem.js'
+import AddToCart from './components/addtocart.js'
 
 const sizesAvailable = ["L", "M", "S", "XL", "XM", "XS", "XXL"]
 const shoppingItemsData = [
   {
-    imgPath: '../../images/celtics-jersey.jpg',
+    imgPath: 'celticsjersey',
     title: 'Celtics Jersey',
     price: '$15'
   }, {
-    imgPath: '../../images/bball.jpeg',
+    imgPath: 'bball',
     title: 'Basketball',
     price: '$12'
   }, {
-    imgPath: '../../images/macbook.jpg',
+    imgPath: 'macbook',
     title: 'MacBook Pro',
     price: '$2400'
   }
 ]
 
-class App extends Component {
+class App extends React.Component {
+  
   constructor(props) {
     super(props);
+    this.state = {
+      item:'abc'
+    }
+    // this.handleSizeClick = this.handleSizeClick.bind(this);
+  }
+  
+  handleSizeClick() {
+    console.log("this is size:", this);
   }
 
-  handleSizeClick(size) {
-    console.log("this is:", this);
-  }
-
-  handleShoppingItemCardClick(item) {
+  handleShoppingItemCardClick() {
     console.log("clicked item is:", this);
+    this.setState({item:'abc'})
+    console.log("this.state", this.state);
+  }
+
+  _renderAddToCartComponent() {
+    console.log("this.state", this.state);
+    return <AddToCart />
   }
 
   render() {
@@ -47,10 +60,11 @@ class App extends Component {
           <div className="col-md-9 shopping-item-class">
             <ShoppingItems
               shoppingItemsData={shoppingItemsData}
-              onClick={(item) => this.handleShoppingItemCardClick.bind(item)}
+              onClick={(item) => this.handleShoppingItemCardClick.bind(item, this)}
             />
           </div>
         </div>
+        {this._renderAddToCartComponent()}
       </div>
     );
   }

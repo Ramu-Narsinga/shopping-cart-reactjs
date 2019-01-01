@@ -1,5 +1,4 @@
-li {
- list-style-type: none;
+.size-element {
  font-family: Helvetica, sans-serif;
  background-color: #80b3ff;
  color: #fff;
@@ -8,8 +7,4 @@ li {
  border-radius: 50%;
  text-align: center;
  cursor: pointer;
-}
-
-ul {
-    max-width: 100px;
 }

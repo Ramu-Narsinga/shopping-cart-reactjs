@@ -20,7 +20,7 @@ function ShoppingItemsCard(props) {
                     <CardTitle>{item.title}</CardTitle>
                     <CardSubtitle>Price: {item.price}</CardSubtitle>
                     {/* <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText> */}
-                    <Button onClick={()=>props.onClick(item)}>Add To Cart</Button>
+                    <Button onClick={() => props.onClick(item)}>Add To Cart</Button>
                 </CardBody>
             </Card>
         </div>
@@ -32,15 +32,24 @@ class ShoppingItems extends React.Component {
 
     constructor(props) {
         super(props);
+
         console.log("props of shopping item", props);
         for (var i = 0; i < props.shoppingItemsData.length; i++) {
             console.log("image array", imageArray[i]);
             props.shoppingItemsData[i].imgPath = imageArray[i];
         }
+
+        //set the state here for filter function
+        this.state = {
+            shoppingItemsData: props.shoppingItemsData
+        }
     }
+
     render() {
+        console.log("in shopping items class for filter function", this.state.shoppingItemsData, "this.props", this.props);
+        
         return (
-            <div className="row" > <ShoppingItemsCard shoppingItemsData={this.props.shoppingItemsData} onClick={this.props.onClick}/></div>
+            <div className="row" > <ShoppingItemsCard shoppingItemsData={this.props.shoppingItemsData} onClick={this.props.onClick} /></div>
         );
     }
 }

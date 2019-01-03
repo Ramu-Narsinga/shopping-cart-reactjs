@@ -7,6 +7,34 @@ import AddToCart from './components/addtocart.js'
 import { Nav, NavItem, NavLink } from 'reactstrap'
 import { InputGroup, InputGroupText, InputGroupAddon, Input } from 'reactstrap';
 import { Popover, OverlayTrigger, Button, ButtonToolbar } from 'react-bootstrap';
+import { createStore } from 'redux'
+
+/**
+ * This is a reducer, a pure function with (state, action) => state signature.
+ * It describes how an action transforms the state into the next state.
+ *
+ * The shape of the state is up to you: it can be a primitive, an array, an object,
+ * or even an Immutable.js data structure. The only important part is that you should
+ * not mutate the state object, but return a new object if the state changes.
+ *
+ * In this example, we use a `switch` statement and strings, but you can use a helper that
+ * follows a different convention (such as function maps) if it makes sense for your
+ * project.
+ */
+function counter(state = 0, action) {
+  switch (action.type) {
+    case 'INCREMENT':
+      return state + 1
+    case 'DECREMENT':
+      return state - 1
+    default:
+      return state
+  }
+}
+
+// Create a Redux store holding the state of your app.
+// Its API is { subscribe, dispatch, getState }.
+let store = createStore(counter)
 
 const sizesAvailable = ["L", "M", "S", "XL", "XM", "XS", "XXL"]
 const shoppingItemsData = [
@@ -207,7 +235,7 @@ class App extends React.Component {
     console.log("handleSearchInputChange", event.target.value, "this.state.shoppingItemsData in search change function", this.state.shoppingItemsData)
     this.setState({ searchValue: event.target.value });
     const indexArray = [];
-    
+
     if (event.target.value.length == 0) {
       var allElements = this.state.shoppingItemsData;
     }
@@ -234,14 +262,14 @@ class App extends React.Component {
       //iterate over indexArray and splice updatedList array with index from indexArray
       for (var i = 0; i < indexArray.length; i++) {
         console.log("updatedList in for splicing", updatedList)
-        
+
         //after splice reduce array number by one to avoid inconsistency
         if (indexArray[i] > 0 && i != 0) {
           indexArray[i] = indexArray[i] - 1;
         }
 
         updatedList.splice(indexArray[i], 1);
-        
+
       }
 
       console.log("after splice updatedList::", updatedList);
@@ -264,6 +292,20 @@ class App extends React.Component {
   }
 
   render() {
+    // You can use subscribe() to update the UI in response to state changes.
+    // Normally you'd use a view binding library (e.g. React Redux) rather than subscribe() directly.
+    // However it can also be handy to persist the current state in the localStorage.
+
+    store.subscribe(() => console.log(store.getState()))
+
+    // The only way to mutate the internal state is to dispatch an action.
+    // The actions can be serialized, logged or stored and later replayed.
+    store.dispatch({ type: 'INCREMENT' })
+    // 1
+    store.dispatch({ type: 'INCREMENT' })
+    // 2
+    store.dispatch({ type: 'DECREMENT' })
+    // 1
     return (
       <div className="container-fluid">
         <br />
